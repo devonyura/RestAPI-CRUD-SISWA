@@ -25,6 +25,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'cors' => \App\Filters\CorsFilter::class, // Tambahkan i
+        'auth' => \App\Filters\AuthFilter::class,
     ];
 
     /**
@@ -71,5 +72,15 @@ class Filters extends BaseConfig
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'auth' => [
+            'before' => [
+                'api/siswa/*',  // JWT berlaku untuk semua API
+            ],
+            'except' => [
+                'api/auth/login', 
+                'api/auth/register'  // Kecualikan login & register dari JWT
+            ]
+	    ],
+    ];
 }
